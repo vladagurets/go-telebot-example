@@ -15,9 +15,9 @@ var rootCmd = &cobra.Command{
 	Short: "Go-bot",
 	Long:  "Go-booooooooooooooot",
 	Run: func(cmd *cobra.Command, args []string) {
-		token := os.Getenv("TOKEN")
+		token := os.Getenv("TELE_TOKEN")
 		if token == "" {
-			fmt.Println("TOKEN environment variable is not set.")
+			fmt.Println("TELE_TOKEN environment variable is not set.")
 			return
 		}
 	},
@@ -30,7 +30,7 @@ func main() {
 	}
 
 	pref := tele.Settings{
-		Token:  os.Getenv("TOKEN"),
+		Token:  os.Getenv("TELE_TOKEN"),
 		Poller: &tele.LongPoller{Timeout: 10 * time.Second},
 	}
 
