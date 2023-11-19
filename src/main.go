@@ -24,6 +24,8 @@ var rootCmd = &cobra.Command{
 }
 
 func main() {
+	fmt.Println("Hello. I'm Bot 🤖")
+
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
