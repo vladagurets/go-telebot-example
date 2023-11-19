@@ -50,8 +50,8 @@ clean:
 		@docker rmi $(IMAGE_NAME):$(TARGETOS)-$(TARGETARCH) || true
 
 clean-all:
-		@$(MAKE) clean TARGETOS=linux TARGETARCH=amd64 || true
-		@$(MAKE) clean TARGETOS=linux TARGETARCH=arm64 || true
-		@$(MAKE) clean TARGETOS=linux TARGETARCH=armv7 || true
-		@$(MAKE) clean TARGETOS=windows TARGETARCH=amd64 || true
-		@$(MAKE) clean TARGETOS=darwin TARGETARCH=amd64 || true
+		@$(MAKE) clean TARGETOS=linux TARGETARCH=amd64
+		@$(MAKE) clean TARGETOS=linux TARGETARCH=arm64
+		@$(MAKE) clean TARGETOS=linux TARGETARCH=armv7
+		@$(MAKE) clean TARGETOS=windows TARGETARCH=amd64
+		@$(MAKE) clean TARGETOS=darwin TARGETARCH=amd64
