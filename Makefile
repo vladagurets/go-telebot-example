@@ -4,7 +4,7 @@ TARGETOS ?= linux
 TARGETARCH ?= amd64
 IMAGE_NAME ?= ghcr.io/vladagurets/go-telebot
 
-build:
+image:
 		@docker buildx build \
 			--build-arg TARGETOS=$(TARGETOS) \
 			--build-arg TARGETARCH=$(TARGETARCH) \
@@ -12,22 +12,22 @@ build:
 			.
 
 build-linux-amd64:
-		@$(MAKE) build TARGETOS=linux TARGETARCH=amd64
+		@$(MAKE) image TARGETOS=linux TARGETARCH=amd64
 
 build-linux-arm64:
-		@$(MAKE) build TARGETOS=linux TARGETARCH=arm64
+		@$(MAKE) image TARGETOS=linux TARGETARCH=arm64
 
 build-linux-armv7:
-		@$(MAKE) build TARGETOS=linux TARGETARCH=armv7
+		@$(MAKE) image TARGETOS=linux TARGETARCH=armv7
 
 build-windows-amd64:
-		@$(MAKE) build TARGETOS=windows TARGETARCH=amd64
+		@$(MAKE) image TARGETOS=windows TARGETARCH=amd64
 
 build-macos-amd64:
-		@$(MAKE) build TARGETOS=darwin TARGETARCH=amd64
+		@$(MAKE) image TARGETOS=darwin TARGETARCH=amd64
 
 build-macos-arm64:
-		@$(MAKE) build TARGETOS=darwin TARGETARCH=arm64
+		@$(MAKE) image TARGETOS=darwin TARGETARCH=arm64
 
 build-all:
 		@$(MAKE) build-linux-amd64
