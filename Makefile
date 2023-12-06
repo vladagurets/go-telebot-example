@@ -12,7 +12,11 @@ TAG=denvasyliev/k8sdiy
 BUILD=$$(git rev-parse HEAD|cut -c1-7)
 
 image:
-		echo 2
+		@${BUILDER} build \
+			--build-arg TARGETOS=$(TARGETOS) \
+			--build-arg TARGETARCH=$(TARGETARCH) \
+			-t $(IMAGE_NAME):$(TARGETOS)-$(TARGETARCH) \
+			.
 
 build:
 	@echo "Let's build ${BUILD}"
