@@ -1,57 +1,38 @@
-.PHONY: build build-linux-amd64 build-linux-arm64 build-linux-armv7 build-macos-arm64 build-windows-amd64 build-macos-amd64 build-all clean clean-all push push-all
+.PHONY: all build unit-test clean
 
-TARGETOS ?= linux
-TARGETARCH ?= amd64
-IMAGE_NAME ?= ghcr.io/vladagurets/go-telebot
+all: build 
+test: unit-test
+
+PLATFORM=linux/amd64 
+
+BUILDER = docker
+
+TAG=denvasyliev/k8sdiy
+
+BUILD=$$(git rev-parse HEAD|cut -c1-7)
 
 image:
-		@docker buildx build \
-			--build-arg TARGETOS=$(TARGETOS) \
-			--build-arg TARGETARCH=$(TARGETARCH) \
-			-t $(IMAGE_NAME):$(TARGETOS)-$(TARGETARCH) \
-			.
+		echo 2
 
-build-linux-amd64:
-		@$(MAKE) image TARGETOS=linux TARGETARCH=amd64
-
-build-linux-arm64:
-		@$(MAKE) image TARGETOS=linux TARGETARCH=arm64
-
-build-linux-armv7:
-		@$(MAKE) image TARGETOS=linux TARGETARCH=armv7
-
-build-windows-amd64:
-		@$(MAKE) image TARGETOS=windows TARGETARCH=amd64
-
-build-macos-amd64:
-		@$(MAKE) image TARGETOS=darwin TARGETARCH=amd64
-
-build-macos-arm64:
-		@$(MAKE) image TARGETOS=darwin TARGETARCH=arm64
-
-build-all:
-		@$(MAKE) build-linux-amd64
-		@$(MAKE) build-linux-arm64
-		@$(MAKE) build-linux-armv7
-		@$(MAKE) build-windows-amd64
-		@$(MAKE) build-macos-amd64
+build:
+	@echo "Let's build ${BUILD}"
+	@${BUILDER} build --progress plain \
+	--target bin . --build-arg APP_BUILD_INFO=${BUILD} \
+	--platform ${PLATFORM} \
+	--tag ${TAG}:build-${BUILD}
 
 push:
-		@docker push $(IMAGE_NAME):$(TARGETOS)-$(TARGETARCH)
+	@echo "Let's push it"
+	@${BUILDER} push ${TAG}:build-${BUILD}
 
-push-all:
-		@$(MAKE) push TARGETOS=linux TARGETARCH=amd64
-		@$(MAKE) push TARGETOS=linux TARGETARCH=arm64
-		@$(MAKE) push TARGETOS=linux TARGETARCH=armv7
-		@$(MAKE) push TARGETOS=windows TARGETARCH=amd64
-		@$(MAKE) push TARGETOS=darwin TARGETARCH=amd64
+unit-test:
+	@echo "Run tests here..."
+	@${BUILDER} build --target unit-test .
+
+lint:
+	@echo "Run lint here..."
+	@${BUILDER} build --target lint .
 
 clean:
-		@docker rmi $(IMAGE_NAME):$(TARGETOS)-$(TARGETARCH) || true
-
-clean-all:
-		@$(MAKE) clean TARGETOS=linux TARGETARCH=amd64
-		@$(MAKE) clean TARGETOS=linux TARGETARCH=arm64
-		@$(MAKE) clean TARGETOS=linux TARGETARCH=armv7
-		@$(MAKE) clean TARGETOS=windows TARGETARCH=amd64
-		@$(MAKE) clean TARGETOS=darwin TARGETARCH=amd64
+	@echo "Cleaning up..."
+	rm -rf bin
