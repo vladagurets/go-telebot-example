@@ -15,7 +15,7 @@ image:
 		@${BUILDER} build \
 			--build-arg TARGETOS=$(TARGETOS) \
 			--build-arg TARGETARCH=$(TARGETARCH) \
-			-t $(IMAGE_NAME):$(TARGETOS)-$(TARGETARCH) \
+			-t test \
 			.
 
 build:
