@@ -11,14 +11,14 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 
-COPY . .
+# COPY . .
 
-RUN CGO_ENABLED=0 go build -o go-bot ./src
+# RUN CGO_ENABLED=0 go build -o go-bot ./src
 
-# ----------------
+# # ----------------
 
-FROM alpine:latest
+# FROM alpine:latest
 
-COPY --from=builder /app/go-bot /go-bot
+# COPY --from=builder /app/go-bot /go-bot
 
-ENTRYPOINT ["/go-bot"]
+# ENTRYPOINT ["/go-bot"]
